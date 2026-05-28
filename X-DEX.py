@@ -11,7 +11,7 @@ Fonctions:
 - Sauvegarde les résultats en JSON
 
 Usage:
-    python3 X-DEX .py https://example.com
+    python3 web_analyzer.py https://example.com
 
 Dépendances:
     pip install requests beautifulsoup4
@@ -24,7 +24,9 @@ import json
 import sys
 import re
 from collections import deque
+from rich.console import Console
 
+console = Console()
 
 class WebAnalyzer:
     def __init__(self, base_url, max_depth=2):
@@ -53,10 +55,10 @@ class WebAnalyzer:
         powered = headers.get("X-Powered-By")
 
         if server:
-            techs.append(f"Server: {server}")
+           techs.append(f"Server: {server}")
 
         if powered:
-            techs.append(f"Powered-By: {powered}")
+           techs.append(f"Powered-By: {powered}")
 
         html_lower = html.lower()
 
@@ -161,7 +163,7 @@ class WebAnalyzer:
             if depth > self.max_depth:
                 continue
 
-            print(f"[+] Analyse: {current_url}")
+            console.print(f"[+] Analyse: {current_url}")
             self.visited.add(current_url)
 
             try:
@@ -193,7 +195,7 @@ class WebAnalyzer:
                         queue.append((endpoint, depth + 1))
 
             except requests.exceptions.RequestException as e:
-                print(f"[-] Erreur sur {current_url}: {e}")
+                console.print(f"[-] Erreur sur {current_url}: {e}")
 
         self.results["technologies"] = list(set(self.results["technologies"]))
 
