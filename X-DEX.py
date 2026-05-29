@@ -26,6 +26,23 @@ import re
 from collections import deque
 from rich.console import Console
 
+# ANSI Couleurs STYLE
+class Colors:
+    RED = '\033[91m'; GREEN = '\033[92m'; YELLOW = '\033[93m'
+    BLUE = '\033[94m'; PURPLE = '\033[95m'; CYAN = '\033[96m'
+    WHITE = '\033[97m'; BOLD = '\033[1m'; END = '\033[0m'
+
+def bannière():
+    print(f"""
+{Colors.PURPLE}{Colors.BOLD}
+( )  ( )       (  _`\ (  _`\ ( )  ( )
+`\`\/'/'______ | | ) || (_(_)`\`\/'/'
+  >  < (______)| | | )|  _)_   >  <  
+ /'/\`\        | |_) || (_( ) /'/\`\ 
+(_)  (_)       (____/'(____/'(_)  (_)
+{Colors.CYAN}👤 crée par Mr.Dark | 📅 {time.strftime('%Y-%m-%d %H:%M:%S')}{Colors.END}
+    """)
+
 console = Console()
 
 class WebAnalyzer:
@@ -203,30 +220,30 @@ class WebAnalyzer:
         with open(filename, "w", encoding="utf-8") as f:
             json.dump(self.results, f, indent=4, ensure_ascii=False)
 
-        print(f"\n[+] Résultats sauvegardés dans: {filename}")
+        console.print(f"\n[+] Résultats sauvegardés dans: {filename}")
 
     def print_summary(self):
-        print("\n========== RÉSUMÉ ==========")
+        console.print("\n========== RÉSUMÉ ==========")
 
-        print("\n[HEADERS]")
+        console.print("\n[HEADERS]")
         for key, value in self.results["headers"].items():
-            print(f"{key}: {value}")
+            console.print(f"{key}: {value}")
 
         print("\n[REDIRECTIONS]")
         for r in self.results["redirects"]:
-            print(f"{r['status']} | {r['from']} -> {r['to']}")
+            console.print(f"{r['status']} | {r['from']} -> {r['to']}")
 
         print("\n[TECHNOLOGIES]")
         for tech in self.results["technologies"]:
-            print(f"- {tech}")
+            console.print(f"- {tech}")
 
-        print("\n[ENDPOINTS TROUVÉS]")
+        console.print("\n[ENDPOINTS TROUVÉS]")
         for endpoint in self.results["endpoints"]:
-            print(f"- {endpoint}")
+            console.print(f"- {endpoint}")
 
-        print("\n[SECURITY HEADERS]")
+        console.print("\n[SECURITY HEADERS]")
         for key, value in self.results["security_headers"].items():
-            print(f"{key}: {value}")
+            console.print(f"{key}: {value}")
 
 
 def main():
